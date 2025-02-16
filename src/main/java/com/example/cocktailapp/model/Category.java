@@ -1,6 +1,5 @@
 package com.example.cocktailapp.model;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -11,17 +10,21 @@ import java.util.Set;
 @Entity
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
 public class Category {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String name;
 
-    // When you later create the Drink entity, you can add the relationship.
-    // For now, we'll keep it simple.
-     @ManyToMany(mappedBy = "categories")
-     private Set<Drink> drinks = new HashSet<>();
+    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Drink> drinks = new HashSet<>();
+
+    // Custom two-argument constructor.
+    public Category(Long id, String name) {
+        this.id = id;
+        this.name = name;
+        this.drinks = new HashSet<>();
+    }
 }
+

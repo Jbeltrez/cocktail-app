@@ -1,4 +1,3 @@
-
 package com.example.cocktailapp.repository;
 
 import com.example.cocktailapp.model.Drink;
@@ -7,5 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface DrinkRepository extends JpaRepository<Drink, Long> {
-    // Additional query methods (if needed) go here.
+    // Add custom query methods if needed.
 }
