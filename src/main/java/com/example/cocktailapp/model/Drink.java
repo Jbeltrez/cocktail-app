@@ -12,16 +12,19 @@ import java.util.Set;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Category {
-
+public class Drink {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String name;
+    private String description;
 
-    // When you later create the Drink entity, you can add the relationship.
-    // For now, we'll keep it simple.
-     @ManyToMany(mappedBy = "categories")
-     private Set<Drink> drinks = new HashSet<>();
+    @ManyToMany
+    @JoinTable(
+            name = "drink_category",
+            joinColumns = @JoinColumn(name = "drink_id"),
+            inverseJoinColumns = @JoinColumn(name = "category_id")
+    )
+    private Set<Category> categories = new HashSet<>();
 }
