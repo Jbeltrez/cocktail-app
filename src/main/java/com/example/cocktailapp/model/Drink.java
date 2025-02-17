@@ -22,7 +22,7 @@ public class Drink {
     @JoinColumn(name = "category_id", nullable = false)
     private Category category;
 
-    // Optional relationship: a drink can belong to a menu.
+    // Add this field:
     @ManyToOne
     @JoinColumn(name = "menu_id")
     private Menu menu;

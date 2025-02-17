@@ -7,5 +7,6 @@ import java.util.Set;
 public class CategoryDTO {
     private Long id;
     private String name;
-    private Set<DrinkDTO> drinks;  // Include associated drinks if desired.
+    // Include associated drinks without their category to avoid recursion.
+    private Set<DrinkDTO> drinks;
 }

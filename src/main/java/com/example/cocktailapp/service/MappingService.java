@@ -11,6 +11,7 @@ import com.example.cocktailapp.model.Menu;
 import com.example.cocktailapp.model.Team;
 import com.example.cocktailapp.model.TeamUpdate;
 import org.springframework.stereotype.Service;
+
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -24,12 +25,24 @@ public class MappingService {
         dto.setDescription(drink.getDescription());
 
         // Map associated Category to its DTO.
+        // This method is used when mapping a standalone Drink.
         CategoryDTO catDto = new CategoryDTO();
         catDto.setId(drink.getCategory().getId());
         catDto.setName(drink.getCategory().getName());
-        // If you want to avoid recursion, you might leave out drinks here.
+        // Not setting drinks in CategoryDTO to avoid recursion.
         dto.setCategory(catDto);
 
+        return dto;
+    }
+
+    // Helper method: maps a Drink to DrinkDTO without setting its category
+    // to avoid circular references when mapping within a Category.
+    public DrinkDTO mapToDrinkDTOWithoutCategory(Drink drink) {
+        DrinkDTO dto = new DrinkDTO();
+        dto.setId(drink.getId());
+        dto.setName(drink.getName());
+        dto.setDescription(drink.getDescription());
+        // Do not set the category field here.
         return dto;
     }
 
@@ -64,13 +77,14 @@ public class MappingService {
         return dto;
     }
 
+    // New method to map Category to CategoryDTO including its drinks without recursion.
     public CategoryDTO mapToCategoryDTO(Category category) {
         CategoryDTO dto = new CategoryDTO();
         dto.setId(category.getId());
         dto.setName(category.getName());
         if (category.getDrinks() != null) {
             Set<DrinkDTO> drinkDTOs = category.getDrinks().stream()
-                    .map(this::mapToDrinkDTO)
+                    .map(this::mapToDrinkDTOWithoutCategory)
                     .collect(Collectors.toSet());
             dto.setDrinks(drinkDTOs);
         }
