@@ -34,6 +34,11 @@ public class SecurityConfig {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
+                // i added this in below so i can test endpoints, the hello is to make sure
+                // a simple GET works
+                .antMatchers("/api/auth/**", "/api/hello", "/api/categories", "/api/drinks", "/api/menus").permitAll()
+
+
                 .antMatchers("/api/auth/**").permitAll() // Allow unauthenticated access to auth endpoints
                 .anyRequest().authenticated();
 
