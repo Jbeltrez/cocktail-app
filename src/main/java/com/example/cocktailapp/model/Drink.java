@@ -21,4 +21,9 @@ public class Drink {
     @ManyToOne
     @JoinColumn(name = "category_id", nullable = false)
     private Category category;
+
+    // Optional relationship: a drink can belong to a menu.
+    @ManyToOne
+    @JoinColumn(name = "menu_id")
+    private Menu menu;
 }
