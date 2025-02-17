@@ -2,7 +2,9 @@ package com.example.cocktailapp.model;
 
 import lombok.Data;
 import javax.persistence.*;
-
+// I WILL NOW BEGIN MAKING THE ASSOCIATION WITH USERS AND TEAMS,
+// THIS COULD GET COMPLICATED SO I AM LEAVING THIS COMMENT HERE BEFORE I PROCEED
+// WILL COMMIT THIS COMMENT
 @Data
 @Entity
 @Table(name = "users")
