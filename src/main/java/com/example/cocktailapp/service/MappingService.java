@@ -3,10 +3,14 @@ package com.example.cocktailapp.service;
 import com.example.cocktailapp.dto.CategoryDTO;
 import com.example.cocktailapp.dto.DrinkDTO;
 import com.example.cocktailapp.dto.MenuDTO;
+import com.example.cocktailapp.dto.TeamUpdateDTO;
+import com.example.cocktailapp.dto.TeamDTO;
+import com.example.cocktailapp.model.Category;
 import com.example.cocktailapp.model.Drink;
 import com.example.cocktailapp.model.Menu;
+import com.example.cocktailapp.model.Team;
+import com.example.cocktailapp.model.TeamUpdate;
 import org.springframework.stereotype.Service;
-
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -23,6 +27,7 @@ public class MappingService {
         CategoryDTO catDto = new CategoryDTO();
         catDto.setId(drink.getCategory().getId());
         catDto.setName(drink.getCategory().getName());
+        // If you want to avoid recursion, you might leave out drinks here.
         dto.setCategory(catDto);
 
         return dto;
@@ -34,6 +39,37 @@ public class MappingService {
         dto.setName(menu.getName());
         if (menu.getDrinks() != null) {
             Set<DrinkDTO> drinkDTOs = menu.getDrinks().stream()
+                    .map(this::mapToDrinkDTO)
+                    .collect(Collectors.toSet());
+            dto.setDrinks(drinkDTOs);
+        }
+        return dto;
+    }
+
+    public TeamDTO mapToTeamDTO(Team team) {
+        TeamDTO dto = new TeamDTO();
+        dto.setId(team.getId());
+        dto.setName(team.getName());
+        return dto;
+    }
+
+    public TeamUpdateDTO mapToTeamUpdateDTO(TeamUpdate update) {
+        TeamUpdateDTO dto = new TeamUpdateDTO();
+        dto.setId(update.getId());
+        dto.setContent(update.getContent());
+        dto.setTimestamp(update.getTimestamp());
+        if (update.getTeam() != null) {
+            dto.setTeamId(update.getTeam().getId());
+        }
+        return dto;
+    }
+
+    public CategoryDTO mapToCategoryDTO(Category category) {
+        CategoryDTO dto = new CategoryDTO();
+        dto.setId(category.getId());
+        dto.setName(category.getName());
+        if (category.getDrinks() != null) {
+            Set<DrinkDTO> drinkDTOs = category.getDrinks().stream()
                     .map(this::mapToDrinkDTO)
                     .collect(Collectors.toSet());
             dto.setDrinks(drinkDTOs);
