@@ -3,8 +3,8 @@ package com.example.cocktailapp.service;
 import com.example.cocktailapp.dto.CategoryDTO;
 import com.example.cocktailapp.dto.DrinkDTO;
 import com.example.cocktailapp.dto.MenuDTO;
-import com.example.cocktailapp.dto.TeamUpdateDTO;
 import com.example.cocktailapp.dto.TeamDTO;
+import com.example.cocktailapp.dto.TeamUpdateDTO;
 import com.example.cocktailapp.model.Category;
 import com.example.cocktailapp.model.Drink;
 import com.example.cocktailapp.model.Menu;
@@ -25,24 +25,21 @@ public class MappingService {
         dto.setDescription(drink.getDescription());
 
         // Map associated Category to its DTO.
-        // This method is used when mapping a standalone Drink.
         CategoryDTO catDto = new CategoryDTO();
         catDto.setId(drink.getCategory().getId());
         catDto.setName(drink.getCategory().getName());
-        // Not setting drinks in CategoryDTO to avoid recursion.
+        // (Avoid setting a drinks collection here to prevent recursion.)
         dto.setCategory(catDto);
 
         return dto;
     }
 
-    // Helper method: maps a Drink to DrinkDTO without setting its category
-    // to avoid circular references when mapping within a Category.
+    // A helper to map a Drink without setting its category.
     public DrinkDTO mapToDrinkDTOWithoutCategory(Drink drink) {
         DrinkDTO dto = new DrinkDTO();
         dto.setId(drink.getId());
         dto.setName(drink.getName());
         dto.setDescription(drink.getDescription());
-        // Do not set the category field here.
         return dto;
     }
 
@@ -77,7 +74,10 @@ public class MappingService {
         return dto;
     }
 
-    // New method to map Category to CategoryDTO including its drinks without recursion.
+    // If you wish to include the drinks in your CategoryDTO, ensure your DTO has a corresponding field.
+    // For example, in CategoryDTO add:
+    //    private Set<DrinkDTO> drinks;
+    // Then use this mapping method:
     public CategoryDTO mapToCategoryDTO(Category category) {
         CategoryDTO dto = new CategoryDTO();
         dto.setId(category.getId());
